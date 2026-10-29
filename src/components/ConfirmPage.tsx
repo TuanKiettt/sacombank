@@ -10,14 +10,16 @@ interface ConfirmPageProps {
 }
 
 export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
-  const [data] = useState<InformationData | null>(() => {
+  const [data, setData] = useState<InformationData | null>(null);
+
+  useEffect(() => {
     try {
-      return readInformationData();
+      const storedData = readInformationData();
+      setData(storedData);
     } catch (error) {
       console.error("Không thể đọc dữ liệu từ localStorage:", error);
-      return null;
     }
-  });
+  }, []);
 
   if (!data) {
     return (
