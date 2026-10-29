@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'inforfont';
+  src: url('/fonts/1FTV-VIP-Neusharp-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-inforfont: 'inforfont', sans-serif;
+}
