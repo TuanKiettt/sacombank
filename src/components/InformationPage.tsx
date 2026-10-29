@@ -12,7 +12,7 @@ interface InformationPageProps {
 
 const universityOptions = [
   {
-    name: "Đại học Duy Tân Đà Năng",
+    name: "Đại học Duy Tân Đà Nẵng",
     address: "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng",
   },
 ];
