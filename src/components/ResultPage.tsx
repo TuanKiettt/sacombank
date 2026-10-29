@@ -174,6 +174,15 @@ export const ResultPage = () => {
             />
           </button>
         </div>
+
+        <div className="relative z-10 flex items-center justify-center gap-1.5 pb-1 text-[0.5rem] leading-none text-white/80">
+          <span>Powered by</span>
+          <img
+            src="/img/invitation-logo.png"
+            alt="Invitation"
+            className="h-[min(4dvh,1.5rem)] max-w-[45%] object-contain"
+          />
+        </div>  
       </div>
     </div>
   );
