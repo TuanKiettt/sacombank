@@ -10,3 +10,24 @@
 @theme {
   --font-inforfont: 'inforfont', sans-serif;
 }
+
+img,
+div {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: auto;
+}
+
+img:focus,
+img:active {
+  outline: none;
+}
+
+*,
+button,
+div,
+img {
+  -webkit-tap-highlight-color: transparent;
+}

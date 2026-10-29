@@ -8,5 +8,16 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      document.addEventListener(
+        "dragstart",
+        (event) => {
+          if (event.target instanceof HTMLImageElement) {
+            event.preventDefault();
+          }
+        },
+        true,
+      );
+    </script>
   </body>
 </html>

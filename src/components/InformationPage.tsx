@@ -93,9 +93,9 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
     <div className="flex flex-col items-center justify-center w-full h-full px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative w-full h-dvh flex flex-col items-center justify-center my-auto mt-3"
+        className="relative w-full h-dvh flex flex-col items-center justify-center my-auto mt-3  lg:p-4"
       >
-        <div className="relative w-full flex flex-col py-6 px-7">
+        <div className="relative w-full flex flex-col py-7 px-7">
           <img
             src="/img/info_frame.png"
             alt="Register Frame"
@@ -113,7 +113,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
             <img src="/img/rightside.png" alt="" className="w-auto h-2" />
           </div>
 
-          <div className="relative z-10 flex flex-col gap-2.5 w-full overflow-y-auto max-h-[45dvh] px-3 mb-4 mt-3">
+          <div className="relative z-10 flex flex-col gap-2.5 w-full overflow-y-auto max-h-[45dvh] px-3 py-2 mb-4 mt-3">
             {singleFields.map((field) => (
               <div key={field.name} className="flex flex-col gap-0.5">
                 <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
@@ -190,12 +190,19 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
                   />
                   <span>Giới tính:</span>
                 </label>
-                <input
-                  type="text"
-                  placeholder="Nam/Nữ"
+
+                <select
                   {...register("gender")}
-                  className="w-3/4 rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 border border-blue-200 "
-                />
+                  defaultValue=""
+                  className="w-3/4 rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none "
+                >
+                  <option value="" disabled className="text-gray-300">
+                    Nam/Nữ
+                  </option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                </select>
+
                 {errors.gender && (
                   <span className="text-red-500 text-[0.65rem] font-medium">
                     {errors.gender.message}

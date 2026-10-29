@@ -26,7 +26,7 @@ export const WelcomePage = ({ onNext }: WelcomePageProps) => {
       </div>
 
       {/* Nút bấm ở dưới đáy khung content */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-end pb-[8%] px-[5%]">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-end pb-[8%] px-[5%] cursor-pointer bottom-[5%]">
         <button
           onClick={onNext}
           className="w-full"

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { readInformationData, type InformationData } from "../lib/information";
+import saveInformationData, {
+  readInformationData,
+  type InformationData,
+} from "../lib/information";
 
 interface ConfirmPageProps {
   onConfirm: () => void;
@@ -7,16 +10,14 @@ interface ConfirmPageProps {
 }
 
 export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
-  const [data, setData] = useState<InformationData | null>(null);
-
-  useEffect(() => {
+  const [data] = useState<InformationData | null>(() => {
     try {
-      const storedData = readInformationData();
-      setData(storedData);
+      return readInformationData();
     } catch (error) {
       console.error("Không thể đọc dữ liệu từ localStorage:", error);
+      return null;
     }
-  }, []);
+  });
 
   if (!data) {
     return (
@@ -30,6 +31,15 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
 
   const normalizedGender = (data.gender ?? "").trim().toLowerCase();
   const isMaleGender = normalizedGender === "nam";
+
+  const handleGenderSelect = (gender: "Nam" | "Nữ") => {
+    setData((prev) => {
+      if (!prev) return prev;
+      const nextData = { ...prev, gender };
+      saveInformationData(nextData);
+      return nextData;
+    });
+  };
 
   const singleFields = [
     {
@@ -132,22 +142,31 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
                       <span>Giới tính:</span>
                     </label>
                     <div className="flex items-center gap-3 mt-1">
-                      <div className="flex items-center gap-1 text-blue-900 text-[0.6rem] sm:text-xs font-medium">
+                      <button
+                        type="button"
+                        onClick={() => handleGenderSelect("Nam")}
+                        className="flex items-center gap-1 text-blue-900 text-[0.6rem] sm:text-xs font-medium bg-transparent border-none p-0 cursor-pointer"
+                      >
                         <img
                           src={isMaleGender ? "/icon/tick_frame.png" : "/icon/none_tick_frame.png"}
                           alt="Nam"
                           className="w-4 h-4"
                         />
                         <span>Nam</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-blue-900 text-[0.6rem] sm:text-xs font-medium">
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleGenderSelect("Nữ")}
+                        className="flex items-center gap-1 text-blue-900 text-[0.6rem] sm:text-xs font-medium bg-transparent border-none p-0 cursor-pointer"
+                      >
                         <img
                           src={isMaleGender ? "/icon/none_tick_frame.png" : "/icon/tick_frame.png"}
                           alt="Nữ"
                           className="w-4 h-4"
                         />
                         <span>Nữ</span>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>

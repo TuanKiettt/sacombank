@@ -16,7 +16,7 @@ export const ResultPage = () => {
     formData?.address ?? "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng";
 
   return (
-    <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col justify-between py-6 px-6">
+    <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col justify-between px-6 py-2">
       {/* Hình nền chính chứa sẵn logo và khung thiệp */}
       <img
         src="/img/background-result.png"
@@ -24,11 +24,37 @@ export const ResultPage = () => {
         className="absolute inset-0 z-0 h-full w-full object-fill pointer-events-none select-none"
       />
 
-      {/* Khoảng trống đẩy nội dung vào đúng vùng khung xanh của thiệp */}
-      <div className="shrink-0" />
+      <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
+        {/* Logo hai bên (Hội & Sacombank) */}
+        <div className="flex flex-row items-center justify-between w-full px-1 gap-2">
+          <div className="">
+            <img
+              src="/img/logo_hoi.png"
+              alt=""
+              className="w-20 object-contain"
+            />
+          </div>
+          <div className="p-1">
+            <img
+              src="/img/sacombank.png"
+              alt=""
+              className="w-30 object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Logo Event */}
+        <div className="relative mt-3 h-full">
+          <img
+            src="/img/invitation.png"
+            alt="Logo Event"
+            className="w-auto h-1/2 object-contain"
+          />
+        </div>
+      </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center w-full my-auto gap-1 px-3 mx-auto mt-35">
+      <div className="relative z-10 flex flex-col items-center justify-center w-full my-auto gap-1 px-3 mx-auto bottom-[14%]">
         <div className="flex flex-col items-center text-center">
           <p className="text-amber-200/90 italic text-xs sm:text-sm uppercase tracking-wider font-semibold drop-shadow">
             Chào mừng bạn
