@@ -5,7 +5,6 @@ export interface InformationData {
   university: string;
   studentId: string;
   gender: string;
-  school?: string;
   address?: string;
 }
 
@@ -23,8 +22,7 @@ export function isValidPhone(phone: string): boolean {
 export default function saveInformationData(data: InformationData): void {
   const normalizedData: InformationData = {
     ...data,
-    university: data.university || data.school || "",
-    school: data.school ?? data.university,
+    university: data.university || "",
     address: data.address ?? "",
   };
 
@@ -67,7 +65,6 @@ export function readInformationData(): InformationData | null {
         phone: value.phone,
         email: value.email,
         university,
-        school: university,
         studentId: value.studentId,
         gender: value.gender,
         address:

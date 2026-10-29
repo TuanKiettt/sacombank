@@ -11,8 +11,7 @@ export const ResultPage = () => {
     }
   }, []);
 
-  const universityName =
-    formData?.school ?? formData?.university ?? "Đại học Duy Tân Đà Nẵng";
+  const universityName = formData?.university ?? "Đại học Duy Tân Đà Nẵng";
   const eventAddress =
     formData?.address ?? "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng";
 
@@ -54,7 +53,7 @@ export const ResultPage = () => {
                 Đã đăng ký thành công
               </p>
               <p className="text-slate-700 text-[10px] font-semibold">
-                <span className="text-blue-600">Chương trình{" "}</span> 
+                <span className="text-blue-600">Chương trình </span>
                 <span className="text-blue-800 font-bold">
                   Ngày Hội Tài Chính Số
                 </span>
