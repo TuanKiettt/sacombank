@@ -12,24 +12,8 @@ interface InformationPageProps {
 
 const universityOptions = [
   {
-    name: "Đại học Duy Tân",
+    name: "Đại học Duy Tân Đà Năng",
     address: "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng",
-  },
-  {
-    name: "Đại học Bách Khoa Đà Nẵng",
-    address: "54 Nguyễn Lương Bằng, Hòa Khánh Bắc, Đà Nẵng",
-  },
-  {
-    name: "Đại học FPT Đà Nẵng",
-    address: "Số 7 Đường Duy Tân, P. Hòa Cường Nam, Hải Châu, Đà Nẵng",
-  },
-  {
-    name: "Đại học Kinh Tế - ĐH Đà Nẵng",
-    address: "71 Ngũ Hành Sơn, P. Hòa Hải, Ngũ Hành Sơn, Đà Nẵng",
-  },
-  {
-    name: "Đại học Huế",
-    address: "03 Lê Lợi, P. Thuận Hóa, Huế",
   },
 ];
 
@@ -58,6 +42,9 @@ const singleFields = [
 ];
 
 export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
+  const defaultUniversity = universityOptions[0].name;
+  const defaultAddress = universityOptions[0].address;
+
   const {
     register,
     handleSubmit,
@@ -67,7 +54,8 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
     resolver: zodResolver(inforSchema),
     mode: "onBlur",
     defaultValues: {
-      address: "",
+      address: defaultAddress,
+      university: defaultUniversity,
     },
   });
 
@@ -83,7 +71,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
     );
 
     setValue("university", event.target.value, { shouldValidate: true });
-    setValue("address", selected?.address ?? "", {
+    setValue("address", selected?.address ?? defaultAddress, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -142,17 +130,10 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
               <select
                 {...register("university")}
                 onChange={handleUniversityChange}
-                defaultValue=""
+                defaultValue={defaultUniversity}
                 className="w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none border border-blue-200 focus:border-blue-500 shadow-inner"
               >
-                <option value="" disabled>
-                  Chọn trường đại học 
-                </option>
-                {universityOptions.map((option) => (
-                  <option key={option.name} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
+                <option value={defaultUniversity}>{defaultUniversity}</option>
               </select>
               <input type="hidden" {...register("address")} />
               {errors.university && (
