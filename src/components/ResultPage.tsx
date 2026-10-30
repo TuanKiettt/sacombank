@@ -124,7 +124,7 @@ export const ResultPage = () => {
                   <span className="text-[0.5rem] text-blue-400 uppercase font-bold shrink-0">
                     Địa chỉ:
                   </span>
-                  <span className="text-xs font-extrabold text-blue-800">
+                  <span className="text-xs font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
                     {universityName}
                   </span>
                 </div>
@@ -145,7 +145,7 @@ export const ResultPage = () => {
                   <span className="text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0">
                     Thời gian:
                   </span>
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold text-blue-800">
+                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
                     8:00 - 17:00
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export const ResultPage = () => {
                 <div className="h-5 w-px bg-slate-300 mx-1"></div>
 
                 <div className="flex items-center text-right">
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold text-blue-800">
+                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
                     28.11.2026
                   </span>
                 </div>

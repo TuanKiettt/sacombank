@@ -87,6 +87,8 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
           <img
             src="/img/info_frame.png"
             alt="Register Frame"
+            fetchPriority="high"
+            loading="eager"
             className="absolute inset-0 z-0 w-full h-full object-fill"
           />
 
