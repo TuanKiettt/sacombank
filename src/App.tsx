@@ -4,7 +4,7 @@ import { MainLayout } from "./layout/MainLayout";
 import { WelcomePage } from "./components/WelcomePage";
 import { InformationPage } from "./components/InformationPage";
 import { type InformationFormData } from "./schema/inforSchema";
-import { saveInformationData } from "./lib/information";
+import saveInformationData, {  saveRegistrationToSupabase, checkDuplicate, readInformationData } from "./lib/information";
 import { ConfirmPage } from "./components/ConfirmPage";
 import ProgressRing from "./components/ProgressRing";
 import { ResultPage } from "./components/ResultPage";
@@ -20,6 +20,30 @@ function App() {
     } catch (error) {
       console.error("Lỗi khi lưu thông tin:", error);
       alert("Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại!");
+    }
+  };
+
+  const handleConfirmRegistration = async () => {
+    const currentData = readInformationData();
+    if(!currentData || !currentData.email || !currentData.phone) {
+      alert("Không tìm thấy thông tin đăng ký hợp lệ.");
+      setStep(1);
+      return;
+    }
+
+    try {
+      const duplicateCheck = await checkDuplicate(currentData.email, currentData.phone);
+      if(duplicateCheck.field) {
+        alert(duplicateCheck.message);
+        setStep(1);
+        return;
+      }
+      await saveRegistrationToSupabase(currentData);
+
+      setStep(3);
+    } catch (error: any) {
+      console.error("Lôi khi lưu database:", error);
+      alert(error.message || "Có lỗi xảy ra khi lưu vào hệ thống");
     }
   };
 
@@ -58,7 +82,7 @@ function App() {
               )}
               {step === 2 && (
                 <ConfirmPage
-                  onConfirm={() => setStep(3)}
+                  onConfirm={handleConfirmRegistration}
                   onBack={() => setStep(1)}
                 />
               )}

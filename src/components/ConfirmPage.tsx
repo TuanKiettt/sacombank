@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import  { saveInformationData,
+import saveInformationData, { 
   readInformationData,
   type InformationData,
 } from "../lib/information";
