@@ -74,16 +74,16 @@ export const ResultPage = () => {
             </div>
           </div>
 
-          <div className="relative mt-3 h-full">
+          <div className="relative mt-5 h-full">
             <img
               src="/img/invitation.png"
               alt="Logo Event"
-              className="w-auto h-1/2 object-contain"
+              className="w-auto h-2/3 object-contain"
             />
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center w-full my-auto gap-1 px-3 mx-auto bottom-[12%]">
+        <div className="absolute z-10 flex flex-col items-center justify-center w-full my-auto gap-1 px-3 mx-auto top-[25%]">
           <div className="flex flex-col items-center text-center">
             <p className="text-amber-200/90 italic text-xs sm:text-sm uppercase tracking-wider font-semibold drop-shadow">
               Chào mừng bạn
@@ -161,12 +161,21 @@ export const ResultPage = () => {
             </div>
           </div>
         </div>
-
+        <div className="absolute z-10 bottom-[15%] left-0 right-0 flex items-center justify-center pointer-events-none">
+          <img
+            src="/img/Logo_event.png"
+            alt="Logo Event Bottom"
+            className="w-1/2 h-auto object-contain drop-shadow-md"
+          />
+        </div>
         <div
-          className="download-button relative z-10 flex flex-col items-center w-full shrink-0"
+          className="download-button absolute z-10 flex flex-col bottom-[5%] items-end w-full shrink-0"
           onClick={handleDownload}
         >
-          <button type="button" className="w-full p-0 flex justify-center">
+          <button
+            type="button"
+            className="bottom-0 w-full p-0 flex justify-center"
+          >
             <img
               src="/btn/download.png"
               alt="Tải thiệp mời xuống"
@@ -182,7 +191,7 @@ export const ResultPage = () => {
             alt="Invitation"
             className="h-[min(4dvh,1.5rem)] max-w-[45%] object-contain"
           />
-        </div>  
+        </div>
       </div>
     </div>
   );

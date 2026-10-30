@@ -13,6 +13,7 @@
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^6.0.1",
     "@tailwindcss/vite": "^4.3.3",
+    "framer-motion": "^14.8.0",
     "gsap": "^3.15.0",
     "html2canvas": "^1.4.1",
     "lucide-react": "^1.63.0",
@@ -20,6 +21,7 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-hook-form": "^7.91.0",
+    "react-router-dom": "^7.18.5",
     "tailwindcss": "^4.3.3",
     "zod": "^4.6.7"
   },

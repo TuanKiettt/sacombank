@@ -1,10 +1,12 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  step: number; // Nhận step để trigger animation khi đổi trang con
 }
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children, step }: MainLayoutProps) => {
   return (
     <div className="flex min-h-dvh w-full justify-center bg-black">
       {/* Khung giả lập mobile tổng */}
@@ -16,11 +18,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
         />
 
-        {/* Phần Header chứa Logo luôn nằm ở trên cùng */}
+        {/* Phần Header chứa Logo luôn cố định ở trên cùng */}
         <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
           {/* Logo hai bên (Hội & Sacombank) */}
           <div className="flex flex-row items-center justify-between w-full px-5">
-            <div className="">
+            <div>
               <img
                 src="/img/logo_hoi.png"
                 alt=""
@@ -46,9 +48,20 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           </div>
         </div>
 
-        {/* Phần Content chứa các trang con (luôn nằm phía dưới logo event và tự động co giãn) */}
+        {/* Phần Content có hiệu ứng chuyển động mượt mà khi đổi step */}
         <main className="relative z-10 flex flex-col flex-1 w-full overflow-hidden">
-          {children}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="flex flex-col flex-1 w-full h-full"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>

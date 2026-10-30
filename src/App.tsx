@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { MainLayout } from "./layout/MainLayout";
 import { WelcomePage } from "./components/WelcomePage";
 import { InformationPage } from "./components/InformationPage";
@@ -23,10 +24,10 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-dvh w-full justify-center bg-black">
-      {/* Các bước từ 0 đến 2 và bước 4 dùng MainLayout */}
+    <AnimatePresence mode="wait">
+      {/* Bước 0 đến 2: Dùng chung MainLayout (Logo đứng yên, nội dung trượt đổi) */}
       {step < 3 && (
-        <MainLayout>
+        <MainLayout key="main-layout" step={step}>
           {step === 0 && <WelcomePage onNext={() => setStep(1)} />}
           {step === 1 && (
             <InformationPage onSubmitSuccess={handleRegisterSubmit} />
@@ -42,25 +43,43 @@ function App() {
 
       {/* Step 3: ProgressRing hiển thị độc lập */}
       {step === 3 && (
-        <div className="relative h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col items-center justify-center">
-          <img
-            src="/img/background.png"
-            alt="background"
-            className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
-          />
-          <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-            <ProgressRing size={200} onComplete={() => setStep(4)} />
+        <motion.div
+          key="step-3"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex min-h-dvh w-full justify-center bg-black"
+        >
+          <div className="relative h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col items-center justify-center">
+            <img
+              src="/img/background.png"
+              alt="background"
+              className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
+            />
+            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+              <ProgressRing size={200} onComplete={() => setStep(4)} />
+            </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
-      {/* Step 4: ResultPage độc lập trong khung MainLayout */}
+      {/* Step 4: ResultPage độc lập */}
       {step === 4 && (
-        <div className="relative h-dvh w-full max-w-107.5 overflow-hidden flex flex-col items-center justify-center">
-          <ResultPage />
-        </div>
+        <motion.div
+          key="step-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex min-h-dvh w-full justify-center bg-black"
+        >
+          <div className="relative h-dvh w-full max-w-107.5 overflow-hidden flex flex-col items-center justify-center bg-black">
+            <ResultPage />
+          </div>
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 }
 
