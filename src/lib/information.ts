@@ -1,3 +1,5 @@
+import { supabase } from "./supabase";
+
 export interface InformationData {
   fullName: string;
   phone?: string;
@@ -19,63 +21,74 @@ export function isValidPhone(phone: string): boolean {
   return /^0\d{9}$/.test(phone);
 }
 
-export default function saveInformationData(data: InformationData): void {
+export function saveInformationData(data: InformationData): void {
   const normalizedData: InformationData = {
     ...data,
     university: data.university || "",
     address: data.address ?? "",
   };
-
   localStorage.setItem(INFORMATION_STORAGE_KEY, JSON.stringify(normalizedData));
 }
 
 export function readInformationData(): InformationData | null {
   const stored = localStorage.getItem(INFORMATION_STORAGE_KEY);
-  if (!stored) return null;
-
+  if(!stored) return null;
   try {
-    const value: unknown = JSON.parse(stored);
-    if (
-      typeof value === "object" &&
-      value !== null &&
-      "fullName" in value &&
-      typeof value.fullName === "string" &&
-      "phone" in value &&
-      typeof value.phone === "string" &&
-      "email" in value &&
-      typeof value.email === "string" &&
-      "studentId" in value &&
-      typeof value.studentId === "string" &&
-      "gender" in value &&
-      typeof value.gender === "string"
-    ) {
-      const university =
-        "university" in value && typeof value.university === "string"
-          ? value.university
-          : "school" in value && typeof value.school === "string"
-            ? value.school
-            : "";
+    return JSON.parse(stored) as InformationData;
+  } catch {
+    return null;
+  }
+}
 
-      if (!university) {
-        return null;
-      }
+// Check duplicate email, phone
+export async function checkDuplicate(email: string, phone: string): Promise<{field: 'email' | 'phone' | null, message: string}> {
+  const { data: emailData, error: emailError } = await supabase
+  .from("registrations")
+  .select("email")
+  .eq("email", email)
+  .maybeSingle();
 
-      return {
-        fullName: value.fullName,
-        phone: value.phone,
-        email: value.email,
-        university,
-        studentId: value.studentId,
-        gender: value.gender,
-        address:
-          "address" in value && typeof value.address === "string"
-            ? value.address
-            : undefined,
-      };
-    }
-  } catch (error) {
-    console.log("Không thể đọc thông tin, vui lòng thử lại", error);
+  if(emailError){
+    console.error("Lỗi kiểm tra email:", emailError);
   }
 
-  throw new Error("Thông tin đăng ký đã lưu trên trình duyệt không hợp lệ.");
+  if(emailData) {
+    return { field: "email", message: "Email này đã được đăng ký tham gia sự kiện."};
+  }
+  
+  const { data: phoneData, error: phoneError } = await supabase
+  .from("registrations")
+  .select("phone")
+  .eq("phone", phone)
+  .maybeSingle();
+
+  if(phoneError){
+    console.error("Lỗi kiểm tra số điện thoại:", phoneError);
+  }
+
+  if(phoneData) {
+    return { field: "phone", message: "Số điện thoại này đã được đăng ký tham gia sự kiện."};
+  }
+
+  return { field: null, message: ""};
+}
+
+// Save Information to Supabase
+export async function saveRegistrationToSupabase(data: InformationData): Promise<void> {
+  const { error } = await supabase.from("registrations").insert([
+    {
+      full_name: data.fullName,
+      phone: data.phone,
+      email: data.email,
+      student_id: data.studentId,
+      gender: data.gender,
+    }
+  ]);
+
+  if(error) {
+    if (error.code === "23505") {
+      throw new Error(" Email hoặc Số điện thoại này đã tồn tại trong hệ thống.");
+    }
+    throw new Error ("Không thể lưu thông tin lên hệ thống");
+  }
 }

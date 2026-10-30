@@ -90,7 +90,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
     <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
       {/* Background chung */}
       <img
-        src="/img/background.png"
+        src="/img/background1.png"
         alt="background"
         className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
       />

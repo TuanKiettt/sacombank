@@ -120,7 +120,7 @@ export const ResultPage = () => {
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
               <div className="absolute inset-0 z-10 flex flex-col justify-center text-left px-8 sm:px-10 overflow-hidden left-[9%] mb-2">
-                <div className="flex items-center gap-1.5 flex-nowrap w-full overflow-hidden">
+                <div className="flex items-baseline gap-1.5 flex-nowrap w-full overflow-hidden">
                   <span className="text-[0.5rem] text-blue-400 uppercase font-bold shrink-0">
                     Địa chỉ:
                   </span>
@@ -142,7 +142,7 @@ export const ResultPage = () => {
               />
               <div className="absolute inset-0 z-10 flex items-center justify-between px-7 sm:px-9 left-[9%] mb-4">
                 <div className="flex items-center gap-1 sm:gap-2 text-left">
-                  <span className="text-[9px] sm:text-[10px] text-slate-500 uppercase font-bold shrink-0">
+                  <span className="text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0">
                     Thời gian:
                   </span>
                   <span className="font-inforfont text-xs sm:text-sm font-extrabold text-blue-800">
