@@ -4,7 +4,7 @@ import { MainLayout } from "./layout/MainLayout";
 import { WelcomePage } from "./components/WelcomePage";
 import { InformationPage } from "./components/InformationPage";
 import { type InformationFormData } from "./schema/inforSchema";
-import saveInformationData, {  saveRegistrationToSupabase, checkDuplicate, readInformationData } from "./lib/information";
+import saveInformationData, { checkDuplicate, readInformationData } from "./lib/information";
 import { ConfirmPage } from "./components/ConfirmPage";
 import ProgressRing from "./components/ProgressRing";
 import { ResultPage } from "./components/ResultPage";
