@@ -7,7 +7,7 @@ export const ResultPage = () => {
   const captureRef = useRef<HTMLDivElement | null>(null);
 
   const [imgUrl, setImgUrl] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+
 
   useEffect(() => {
     const data = readInformationData();
@@ -27,7 +27,6 @@ export const ResultPage = () => {
     ) as HTMLElement | null;
 
     try {
-      setIsGenerating(true);
       await document.fonts.ready;
 
       if (button) button.style.display = "none";
@@ -66,7 +65,6 @@ export const ResultPage = () => {
         "Không thể tạo ảnh thiệp mời. Vui lòng chụp màn hình (Screenshot) để lưu.",
       );
     } finally {
-      setIsGenerating(false);
       if (button) button.style.display = "";
     }
   };
