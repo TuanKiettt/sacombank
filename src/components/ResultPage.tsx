@@ -32,12 +32,38 @@ export const ResultPage = () => {
         scale: 2,
       });
 
+      const shareable = new URL(dataUrl);
+      const popup = window.open(shareable.toString(), "_blank", "noopener,noreferrer");
+
+      if (!popup) {
+        alert(
+          "Trình duyệt đã chặn cửa sổ mở ảnh. Vui lòng nhấn lại hoặc mở ảnh trực tiếp bằng cách bấm vào liên kết được hiển thị.",
+        );
+        return;
+      }
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Thiệp mời sự kiện",
+            text: "Thiệp mời sự kiện Ngày Hội Tài Chính Số",
+            url: dataUrl,
+          });
+          return;
+        } catch (shareError) {
+          console.info("Người dùng hủy chia sẻ ảnh:", shareError);
+        }
+      }
+
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "thiep-moi.png";
+      link.rel = "noopener";
+      link.target = "_blank";
       link.click();
     } catch (error) {
       console.error("Không thể tải thiệp mời:", error);
+      alert("Không thể mở ảnh thiệp mời. Vui lòng thử lại hoặc chụp màn hình.");
     } finally {
       if (button) button.style.display = "";
     }

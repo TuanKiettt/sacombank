@@ -19,5 +19,39 @@
         true,
       );
     </script>
+    <script>
+      (function detectFacebookBrowser() {
+        const isFacebookApp = () => {
+          const ua = navigator.userAgent || navigator.vendor;
+          return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("FB_IAB") > -1);
+        };
+
+        const isZaloApp = () => {
+          const ua = navigator.userAgent || navigator.vendor;
+          return ua.indexOf("Zalo") > -1;
+        };
+
+          const fullPath = `${window.location.pathname}${window.location.hash}`;
+
+        if (isFacebookApp()) {
+          const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+          if (isIOS) {
+            window.location.href = `x-safari-${window.location.protocol}//${window.location.host}${fullPath}`;
+          } else {
+            window.location.href = `intent://${window.location.host}${fullPath}#Intent;scheme=https;end`;
+          }
+        }
+
+        if (isZaloApp()) {
+          const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+          if (isIOS) {
+            window.location.href = `x-safari-${window.location.protocol}//${window.location.host}${fullPath}`;
+          } else {
+            window.location.href = `intent://${window.location.host}${fullPath}#Intent;scheme=https;end`;
+          }
+        }
+      })();
+    </script>
   </body>
 </html>
