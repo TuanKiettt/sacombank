@@ -6,6 +6,9 @@ export const ResultPage = () => {
   const [formData, setFormData] = useState<InformationData | null>(null);
   const captureRef = useRef<HTMLDivElement | null>(null);
 
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+
   useEffect(() => {
     const data = readInformationData();
     if (data) {
@@ -23,46 +26,47 @@ export const ResultPage = () => {
       ".download-button",
     ) as HTMLElement | null;
 
-    const popup = window.open("", "_blank", "noopener,noreferrer");
-
     try {
+      setIsGenerating(true);
       await document.fonts.ready;
 
       if (button) button.style.display = "none";
 
+      // Tạo ảnh PNG từ DOM
       const dataUrl = await domToPng(captureRef.current, {
         scale: 2,
       });
 
-      if (popup) {
-        popup.location.href = dataUrl;
-      }
+      // Chuyển sang Blob & File để thử gọi Web Share API (Safari rất thích cái này)
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], "thiep-moi.png", { type: "image/png" });
 
-      if (navigator.share) {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
             title: "Thiệp mời sự kiện",
             text: "Thiệp mời sự kiện Ngày Hội Tài Chính Số",
-            url: dataUrl,
+            files: [file],
           });
           return;
-        } catch (shareError) {
-          console.info("Người dùng hủy chia sẻ ảnh:", shareError);
+        } catch (shareError: any) {
+          if (shareError.name !== "AbortError") {
+            console.info("Hủy chia sẻ:", shareError);
+          }
+          return;
         }
       }
 
-      if (!popup) {
-        const fallbackLink = document.createElement("a");
-        fallbackLink.href = dataUrl;
-        fallbackLink.download = "thiep-moi.png";
-        fallbackLink.rel = "noopener";
-        fallbackLink.target = "_blank";
-        fallbackLink.click();
-      }
+      // Nếu không hỗ trợ share file, hiển thị ảnh trực tiếp lên Modal để người dùng nhấn giữ lưu
+      setImgUrl(dataUrl);
     } catch (error) {
       console.error("Không thể tải thiệp mời:", error);
-      alert("Không thể mở ảnh thiệp mời. Vui lòng thử lại hoặc chụp màn hình.");
+      alert(
+        "Không thể tạo ảnh thiệp mời. Vui lòng chụp màn hình (Screenshot) để lưu.",
+      );
     } finally {
+      setIsGenerating(false);
       if (button) button.style.display = "";
     }
   };
@@ -221,6 +225,31 @@ export const ResultPage = () => {
           />
         </div>
       </div>
+      {imgUrl && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
+          <div className="relative max-w-sm w-full flex flex-col items-center">
+            <p className="text-white text-xs mb-2 text-center font-medium">
+              👉 Nhấn giữ vào hình ảnh bên dưới và chọn <br />
+              <strong className="text-yellow-300">
+                "Thêm vào Ảnh" (Add to Photos)
+              </strong>{" "}
+              để lưu thiệp!
+            </p>
+            <img
+              src={imgUrl}
+              alt="Thiệp mời của bạn"
+              className="w-full rounded-lg shadow-2xl border border-white/20 object-contain max-h-[70vh]"
+            />
+            <button
+              type="button"
+              onClick={() => setImgUrl(null)}
+              className="mt-4 bg-white text-black font-bold px-6 py-2 rounded-full text-sm active:scale-95 transition-transform"
+            >
+              Đóng lại / Chỉnh sửa tiếp
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
