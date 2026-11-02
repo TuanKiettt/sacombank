@@ -5,17 +5,11 @@ import {
   inforSchema,
   type InformationFormData,
 } from "../schema/inforSchema";
+import { UniversitySearchField } from "./universityOptions";
 
 interface InformationPageProps {
   onSubmitSuccess: (data: InformationFormData) => void;
 }
-
-const universityOptions = [
-  {
-    name: "Đại học Duy Tân Đà Nẵng",
-    address: "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng",
-  },
-];
 
 const singleFields = [
   {
@@ -42,36 +36,30 @@ const singleFields = [
 ];
 
 export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
-  const defaultUniversity = universityOptions[0].name;
-  const defaultAddress = universityOptions[0].address;
-
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<InformationFormInput>({
     resolver: zodResolver(inforSchema),
     mode: "onBlur",
     defaultValues: {
-      address: defaultAddress,
-      university: defaultUniversity,
+      address: "",
+      university: "",
     },
   });
+
+  const universityValue = watch("university") ?? "";
 
   const onSubmit = (data: InformationFormData) => {
     onSubmitSuccess(data);
   };
 
-  const handleUniversityChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selected = universityOptions.find(
-      (option) => option.name === event.target.value,
-    );
-
-    setValue("university", event.target.value, { shouldValidate: true });
-    setValue("address", selected?.address ?? defaultAddress, {
+  const handleUniversityChange = (nextUniversity: string) => {
+    setValue("university", nextUniversity, { shouldValidate: true });
+    setValue("address", "", {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -81,7 +69,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
     <div className="flex flex-col items-center justify-center w-full h-full px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative w-full h-dvh flex flex-col items-center justify-center my-auto mt-3  lg:p-4"
+        className="relative w-full h-dvh flex flex-col items-center justify-center my-auto mt-3 lg:p-4"
       >
         <div className="relative w-full flex flex-col py-7 px-7">
           <img
@@ -129,14 +117,12 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
                 <img src="/icon/university.png" alt="Trường:" className="w-4 h-4" />
                 <span>Trường:</span>
               </label>
-              <select
-                {...register("university")}
+
+              <UniversitySearchField
+                value={universityValue}
                 onChange={handleUniversityChange}
-                defaultValue={defaultUniversity}
-                className="w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none border border-blue-200 focus:border-blue-500 shadow-inner"
-              >
-                <option value={defaultUniversity}>{defaultUniversity}</option>
-              </select>
+              />
+
               <input type="hidden" {...register("address")} />
               {errors.university && (
                 <span className="text-red-500 text-[0.65rem] font-medium">
@@ -153,7 +139,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Nhập mã số sinh viên"
+                  placeholder="Nhập MSSV"
                   {...register("studentId")}
                   className="w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 outline-none border border-blue-200"
                 />
@@ -177,7 +163,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
                 <select
                   {...register("gender")}
                   defaultValue=""
-                  className="w-3/4 rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none "
+                  className="w-3/4 rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none border border-blue-200"
                 >
                   <option value="" disabled className="text-gray-300">
                     Nam/Nữ

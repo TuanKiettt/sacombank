@@ -91,8 +91,10 @@ export async function saveRegistrationToSupabase(data: InformationData): Promise
       full_name: data.fullName,
       phone: normalizePhone(String(data.phone ?? "").trim()),
       email: String(data.email ?? "").trim().toLowerCase(),
-      student_id: data.studentId,
-      gender: data.gender,
+      university: String(data.university ?? "").trim(),
+      address: String(data.address ?? "").trim(),
+      student_id: String(data.studentId ?? "").trim(),
+      gender: String(data.gender ?? "").trim(),
     },
   ]);
 

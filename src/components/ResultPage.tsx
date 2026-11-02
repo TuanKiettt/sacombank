@@ -13,9 +13,8 @@ export const ResultPage = () => {
     }
   }, []);
 
-  const universityName = formData?.university ?? "Đại học Duy Tân Đà Nẵng";
-  const eventAddress =
-    formData?.address ?? "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng";
+  const universityName = "Đại học Duy Tân Đà Nẵng";
+  const eventAddress = "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng";
 
   const handleDownload = async () => {
     if (!captureRef.current) return;
@@ -140,20 +139,25 @@ export const ResultPage = () => {
                 alt="Time Frame"
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
-              <div className="absolute inset-0 z-10 flex items-center justify-between px-7 sm:px-9 left-[9%] mb-4">
+
+              {/* Đã xóa mb-4 và đảm bảo căn giữa tuyệt đối theo chiều dọc */}
+              <div className="absolute inset-0 z-10 mb-4 flex items-center justify-between px-5 sm:px-9 left-[9%]">
+                {/* Nhóm bên trái: Thời gian & Giờ */}
                 <div className="flex items-center gap-1 sm:gap-2 text-left">
-                  <span className="text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0">
+                  <span className="text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0 leading-none">
                     Thời gian:
                   </span>
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
+                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     8:00 - 17:00
                   </span>
                 </div>
 
-                <div className="h-5 w-px bg-slate-300 mx-1"></div>
+                {/* Đường kẻ ngăn cách */}
+                <div className="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
 
+                {/* Nhóm bên phải: Ngày tháng (Thêm flex items-center để đồng bộ) */}
                 <div className="flex items-center text-right">
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
+                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     28.11.2026
                   </span>
                 </div>

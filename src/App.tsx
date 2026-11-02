@@ -38,7 +38,7 @@ function App() {
         setStep(1);
         return;
       }
-      await saveRegistrationToSupabase(currentData);
+      // await saveRegistrationToSupabase(currentData);
 
       setStep(3);
     } catch (error: any) {
