@@ -129,11 +129,6 @@ export const UniversitySearchField = ({
       .slice(0, 50);
   }, [options, value]);
 
-  const hasExactMatch = filteredOptions.some(
-    (option) =>
-      getUniversityDisplayValue(option).toLowerCase() === value.trim().toLowerCase(),
-  );
-
   return (
     <>
       <input
@@ -150,12 +145,6 @@ export const UniversitySearchField = ({
           <option key={`${option.name}-${option.province ?? ""}`} value={getUniversityDisplayValue(option)} />
         ))}
       </datalist>
-
-      {value && !hasExactMatch && (
-        <span className="text-[0.6rem] text-blue-700 leading-tight">
-          Không tìm thấy trường trong danh sách? Bạn vẫn có thể nhập tên trường thủ công.
-        </span>
-      )}
     </>
   );
 };
