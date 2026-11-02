@@ -23,6 +23,8 @@ export const ResultPage = () => {
       ".download-button",
     ) as HTMLElement | null;
 
+    const popup = window.open("", "_blank", "noopener,noreferrer");
+
     try {
       await document.fonts.ready;
 
@@ -32,14 +34,8 @@ export const ResultPage = () => {
         scale: 2,
       });
 
-      const shareable = new URL(dataUrl);
-      const popup = window.open(shareable.toString(), "_blank", "noopener,noreferrer");
-
-      if (!popup) {
-        alert(
-          "Trình duyệt đã chặn cửa sổ mở ảnh. Vui lòng nhấn lại hoặc mở ảnh trực tiếp bằng cách bấm vào liên kết được hiển thị.",
-        );
-        return;
+      if (popup) {
+        popup.location.href = dataUrl;
       }
 
       if (navigator.share) {
@@ -55,12 +51,14 @@ export const ResultPage = () => {
         }
       }
 
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "thiep-moi.png";
-      link.rel = "noopener";
-      link.target = "_blank";
-      link.click();
+      if (!popup) {
+        const fallbackLink = document.createElement("a");
+        fallbackLink.href = dataUrl;
+        fallbackLink.download = "thiep-moi.png";
+        fallbackLink.rel = "noopener";
+        fallbackLink.target = "_blank";
+        fallbackLink.click();
+      }
     } catch (error) {
       console.error("Không thể tải thiệp mời:", error);
       alert("Không thể mở ảnh thiệp mời. Vui lòng thử lại hoặc chụp màn hình.");
