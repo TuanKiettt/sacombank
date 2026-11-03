@@ -78,7 +78,7 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
         <div className="confirm-frame relative w-full flex flex-col">
           {/* Hình nền info_frame.png */}
           <img
-            src="/img/info_frame.png"
+            src="/img/info_frame-web.png"
             alt="Confirm Frame"
             className="absolute inset-0 z-0 w-full h-full object-fill"
           />

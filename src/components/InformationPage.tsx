@@ -73,7 +73,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
       >
         <div className="info-frame relative w-full flex flex-col">
           <img
-            src="/img/info_frame.png"
+            src="/img/info_frame-web.png"
             alt="Register Frame"
             fetchPriority="high"
             loading="eager"

@@ -111,7 +111,7 @@ body { margin: 0; }
 /* Preserve frame corners instead of stretching them with long/error content. */
 .info-frame, .confirm-frame {
   border: 24px solid transparent;
-  border-image: url('/img/info_frame.png') 700 fill / 24px / 0 stretch;
+  border-image: url('/img/info_frame-web.png') 105 fill / 24px / 0 stretch;
   padding: 8px;
 }
 .info-frame > img:first-child, .confirm-frame > img:first-child { display: none; }
