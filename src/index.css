@@ -86,13 +86,15 @@ body { margin: 0; }
 .result-frames { container-type: inline-size; }
 .result-success { font-size: 4.5cqw; margin-top: 9cqw; white-space: nowrap; }
 .result-program { font-size: 3.1cqw; white-space: nowrap; }
-.result-address { left: 18%; padding: 0 4% 2%; }
+.result-address { left: 18%; padding: 0 4% 2% 0; }
 .result-address-label { font-size: 2.6cqw; }
 .result-university { font-size: 3.5cqw; white-space: nowrap; }
 .result-address-detail { font-size: 2.7cqw; }
-.result-time { left: 18%; padding: 0 4% 4%; margin-bottom: 0; gap: 2cqw; white-space: nowrap; }
+.result-time { left: 18%; padding: 0 4% 4% 0; justify-content: flex-start; margin-bottom: 0; gap: 2cqw; white-space: nowrap; }
 .result-time > div { min-width: 0; flex-shrink: 0; }
-.result-time > div:nth-child(2) { height: 5cqw; margin-inline: 0; }
+.result-time-row { display: flex; align-items: baseline; gap: 2cqw; white-space: nowrap; }
+.result-time-row > span { flex-shrink: 0; }
+.result-time-divider { align-self: center; height: 5cqw; width: 1px; }
 .result-time-label { font-size: 2.7cqw; }
 .result-time-value { font-size: 3.5cqw; }
 

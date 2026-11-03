@@ -212,24 +212,16 @@ export const ResultPage = () => {
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
 
-              {/* Đã xóa mb-4 và đảm bảo căn giữa tuyệt đối theo chiều dọc */}
-              <div className="result-time absolute inset-0 z-10 mb-1 flex items-center justify-center px-5 sm:px-9">
-                {/* Nhóm bên trái: Thời gian & Giờ */}
-                <div className="flex items-center gap-1 sm:gap-2 text-left">
-                  <span className="result-time-label text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0 leading-none">
+              <div className="result-time absolute inset-0 z-10 flex items-center">
+                <div className="result-time-row">
+                  <span className="result-time-label text-blue-400 uppercase font-bold leading-none">
                     Thời gian:
                   </span>
-                  <span className="result-time-value font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span className="result-time-value font-inforfont font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     8:00 - 17:00
                   </span>
-                </div>
-
-                {/* Đường kẻ ngăn cách */}
-                <div className="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
-
-                {/* Nhóm bên phải: Ngày tháng (Thêm flex items-center để đồng bộ) */}
-                <div className="flex items-center text-right">
-                  <span className="result-time-value font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span aria-hidden="true" className="result-time-divider bg-slate-300" />
+                  <span className="result-time-value font-inforfont font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     28.11.2026
                   </span>
                 </div>
@@ -299,16 +291,13 @@ export const ResultPage = () => {
                 Lưu / chia sẻ ảnh
               </button>
             )}
-            <a href={imgUrl} download="thiep-moi.png" className="mt-3 text-sm text-white underline">
-              Tải tệp PNG
-            </a>
             {shareError && <p role="status" className="mt-2 text-center text-xs text-white">{shareError}</p>}
             <button
               type="button"
               onClick={() => setImgUrl(null)}
               className="mt-4 bg-white text-black font-bold px-6 py-2 rounded-full text-sm active:scale-95 transition-transform"
             >
-              Đóng lại / Chỉnh sửa tiếp
+              Đóng lại
             </button>
           </div>
         </div>
