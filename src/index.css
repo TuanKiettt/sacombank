@@ -117,7 +117,7 @@ body { margin: 0; }
 .info-frame > img:first-child, .confirm-frame > img:first-child { display: none; }
 
 .confirm-details .grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .confirm-details .grid > div:last-child > div > div { min-width: 0; }
 .confirm-details .grid button { flex-shrink: 0; }
@@ -168,3 +168,9 @@ body { margin: 0; }
   cursor: pointer;
 }
 .form-fields > .grid select.custom-dropdown { padding-right: 30px; }
+
+/* Preserve the original two-column confirmation layout on phones. */
+.confirm-details > .grid { align-items: start; }
+.confirm-details > .grid > div:first-child,
+.confirm-details > .grid > div:last-child > div { align-items: flex-start; gap: 6px; }
+.confirm-details > .grid > div:last-child .mt-1 { gap: 6px; }
