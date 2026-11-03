@@ -100,16 +100,7 @@ function App() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
-            <div className="portrait-canvas relative h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col items-center justify-center">
-              <img
-                src="/img/background.png"
-                alt="background"
-                className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
-              />
-              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                <ProgressRing size={200} onComplete={() => setStep(4)} />
-              </div>
-            </div>
+            <ProgressRing size={200} onComplete={() => setStep(4)} />
           </motion.div>
         )}
 

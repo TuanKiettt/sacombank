@@ -87,7 +87,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
   };
 
   return (
-    <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
+    <div className="portrait-canvas mobile-canvas relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
       {/* Background chung */}
       <img
         src="/img/background1.png"
@@ -96,9 +96,9 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
       />
 
       {/* Phần Header chứa Logo luôn ở trên cùng */}
-      <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
+      <div className="page-header relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
         {/* Logo hai bên (Hội & Sacombank) */}
-        <div className="flex flex-row items-center justify-between w-full px-5">
+        <div className="brand-logos flex flex-row items-center justify-between w-full px-5">
           <div className="">
             <img
               src="/img/logo_hoi.png"
@@ -139,7 +139,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
           />
 
           <img
-            src="./img/circle.png"
+            src="/img/circle.png"
             alt=""
             draggable={false}
             className="absolute inset-0 w-[70%] top-1/2 left-1/2 -translate-1/2 z-10 object-contain"
