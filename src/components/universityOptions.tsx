@@ -137,7 +137,7 @@ export const UniversitySearchField = ({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Tìm kiếm hoặc nhập tên trường..."
-        className="w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 outline-none border border-blue-200 focus:border-blue-500 shadow-inner"
+        className="custom-dropdown w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 outline-none border border-blue-200 focus:border-blue-500 shadow-inner"
       />
 
       <datalist id="university-options-list">

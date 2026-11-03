@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { domToPng } from "modern-screenshot";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { domToBlob } from "modern-screenshot";
 import { readInformationData, type InformationData } from "../lib/information";
 
 export const ResultPage = () => {
@@ -7,6 +7,14 @@ export const ResultPage = () => {
   const captureRef = useRef<HTMLDivElement | null>(null);
 
   const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const downloadInProgress = useRef(false);
+  const [preparedFile, setPreparedFile] = useState<File | null>(null);
+  const [shareError, setShareError] = useState("");
+
+  useEffect(() => () => {
+    if (imgUrl) URL.revokeObjectURL(imgUrl);
+  }, [imgUrl]);
 
 
   useEffect(() => {
@@ -16,63 +24,101 @@ export const ResultPage = () => {
     }
   }, []);
 
+  // The printed frame starts at 22.5% of the background image height.
+  // Keep the content in its safe area and grow the whole ticket for long text.
+  useLayoutEffect(() => {
+    const ticket = captureRef.current;
+    if (!ticket) return;
+    const content = ticket.querySelector<HTMLElement>(".result-content");
+    const header = ticket.querySelector<HTMLElement>(".result-header");
+    const viewport = ticket.parentElement;
+    if (!content || !header || !viewport) return;
+
+    const resizeTicket = () => {
+      const height = Math.ceil(Math.max(
+        viewport.clientHeight,
+        740,
+        (header.offsetHeight + 24) / 0.24,
+        (content.offsetHeight + 16) / 0.40,
+      ));
+      ticket.style.setProperty("--ticket-height", height + "px");
+    };
+    const observer = new ResizeObserver(resizeTicket);
+    [content, header, viewport].forEach((element) => observer.observe(element));
+    resizeTicket();
+    return () => observer.disconnect();
+  }, []);
+
   const universityName = "Đại học Duy Tân Đà Nẵng";
   const eventAddress = "120 Hoàng Minh Thảo, Hòa Khánh Nam, Đà Nẵng";
 
   const handleDownload = async () => {
-    if (!captureRef.current) return;
-
-    const button = captureRef.current.querySelector(
-      ".download-button",
-    ) as HTMLElement | null;
+    const ticket = captureRef.current;
+    if (!ticket || downloadInProgress.current) return;
+    downloadInProgress.current = true;
+    setIsDownloading(true);
+    const button = ticket.querySelector<HTMLElement>(".download-button");
+    const previousVisibility = button?.style.visibility ?? "";
 
     try {
       await document.fonts.ready;
+      await Promise.all(Array.from(ticket.querySelectorAll("img"), (img) => img.decode()));
+      if (button) button.style.visibility = "hidden";
 
-      if (button) button.style.display = "none";
-
-      // Tạo ảnh PNG từ DOM
-      const dataUrl = await domToPng(captureRef.current, {
-        scale: 2,
-      });
-
-      // Chuyển sang Blob & File để thử gọi Web Share API (Safari rất thích cái này)
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      const file = new File([blob], "thiep-moi.png", { type: "image/png" });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            title: "Thiệp mời sự kiện",
-            text: "Thiệp mời sự kiện Ngày Hội Tài Chính Số",
-            files: [file],
-          });
-          return;
-        } catch (shareError: any) {
-          if (shareError.name !== "AbortError") {
-            console.info("Hủy chia sẻ:", shareError);
-          }
-          return;
-        }
+      const blob = await domToBlob(ticket, { scale: 2, type: "image/png" });
+      const url = URL.createObjectURL(blob);
+      setPreparedFile(new File([blob], "thiep-moi.png", { type: "image/png" }));
+      setShareError("");
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+        || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if (isIOS) {
+        setImgUrl(url);
+        return;
       }
-
-      // Nếu không hỗ trợ share file, hiển thị ảnh trực tiếp lên Modal để người dùng nhấn giữ lưu
-      setImgUrl(dataUrl);
+      const link = document.createElement("a");
+      if (!("download" in link)) {
+        setImgUrl(url);
+        return;
+      }
+      link.href = url;
+      link.download = "thiep-moi.png";
+      document.body.appendChild(link);
+      try {
+        link.click();
+        // Give browsers time to consume the file before releasing its URL.
+        window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      } catch {
+        setImgUrl(url);
+      } finally {
+        link.remove();
+      }
     } catch (error) {
       console.error("Không thể tải thiệp mời:", error);
-      alert(
-        "Không thể tạo ảnh thiệp mời. Vui lòng chụp màn hình (Screenshot) để lưu.",
-      );
+      alert("Không thể tạo ảnh thiệp mời. Vui lòng thử lại.");
     } finally {
-      if (button) button.style.display = "";
+      if (button) button.style.visibility = previousVisibility;
+      downloadInProgress.current = false;
+      setIsDownloading(false);
+    }
+  };
+
+  const handleSharePreparedImage = async () => {
+    const file = preparedFile;
+    if (!file || !navigator.canShare?.({ files: [file] })) return;
+    try {
+      // No image generation here: share runs directly from this new tap.
+      await navigator.share({ title: "Thiệp mời sự kiện", files: [file] });
+      setShareError("");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setShareError("Bạn có thể nhấn giữ ảnh để lưu hoặc chọn Tải tệp PNG bên dưới.");
     }
   };
 
   return (
     <div
       ref={captureRef}
-      className="relative isolate h-dvh w-full overflow-hidden bg-black flex flex-col justify-between py-1 px-6"
+      className="result-page mobile-canvas relative isolate h-dvh w-full overflow-hidden bg-black flex flex-col justify-between py-1 px-6"
     >
       <img
         src="/img/background-result.png"
@@ -80,9 +126,9 @@ export const ResultPage = () => {
         className="absolute inset-0 z-0 h-full w-full object-fill pointer-events-none select-none"
       />
 
-      <div className="relative z-10 flex h-full w-full max-w-97.5 flex-col justify-between mx-auto">
-        <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
-          <div className="flex flex-row items-center justify-between w-full px-1 gap-2">
+      <div className="result-body relative z-10 flex h-full w-full max-w-97.5 flex-col justify-between mx-auto">
+        <div className="result-header relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
+          <div className="brand-logos flex flex-row items-center justify-between w-full px-1 gap-2">
             <div>
               <img
                 src="/img/logo_hoi.png"
@@ -99,7 +145,7 @@ export const ResultPage = () => {
             </div>
           </div>
 
-          <div className="relative mt-5 h-full">
+          <div className="result-invitation relative mt-5">
             <img
               src="/img/invitation.png"
               alt="Logo Event"
@@ -108,17 +154,17 @@ export const ResultPage = () => {
           </div>
         </div>
 
-        <div className="absolute z-10 flex flex-col items-center justify-center w-full my-auto gap-1 px-3 mx-auto top-[25%]">
+        <div className="result-content relative z-10 flex flex-col items-center w-full gap-1 mx-auto">
           <div className="flex flex-col items-center text-center">
             <p className="text-amber-200/90 italic text-xs sm:text-sm uppercase tracking-wider font-semibold drop-shadow">
               Chào mừng bạn
             </p>
-            <h2 className="text-yellow-300 font-bold text-lg sm:text-xl uppercase tracking-wide drop-shadow-md mt-0.5">
+            <h2 className="result-name text-yellow-300 font-bold text-lg sm:text-xl uppercase tracking-wide drop-shadow-md mt-0.5">
               {formData?.fullName || "Nguyễn Văn A"}
             </h2>
           </div>
 
-          <div className="relative flex flex-col items-center w-full gap-2.5 mx-auto">
+          <div className="result-frames relative flex flex-col items-center w-full gap-2.5 mx-auto">
             <div className="relative w-full flex items-center justify-center">
               <img
                 src="/img/register_complete.png"
@@ -126,10 +172,10 @@ export const ResultPage = () => {
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
-                <p className="font-extrabold text-sm font-inforfont mt-7 text-blue-700">
+                <p className="result-success font-extrabold text-sm font-inforfont mt-7 text-blue-700">
                   Đã đăng ký thành công
                 </p>
-                <p className="text-slate-700 text-[10px] font-semibold">
+                <p className="result-program text-slate-700 text-[10px] font-semibold">
                   <span className="text-blue-600">Chương trình </span>
                   <span className="text-blue-800 font-bold">
                     Ngày Hội Tài Chính Số
@@ -144,16 +190,16 @@ export const ResultPage = () => {
                 alt="Address Frame"
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
-              <div className="absolute inset-0 z-10 flex flex-col justify-center text-left px-8 sm:px-10 overflow-hidden left-[9%] mb-2">
+              <div className="result-address absolute inset-0 z-10 flex flex-col justify-center text-left px-8 sm:px-10 overflow-hidden left-[9%] ">
                 <div className="flex items-baseline gap-1.5 flex-nowrap w-full overflow-hidden">
-                  <span className="text-[0.5rem] text-blue-400 uppercase font-bold shrink-0">
+                  <span className="result-address-label text-[0.5rem] text-blue-400 uppercase font-bold shrink-0">
                     Địa chỉ:
                   </span>
-                  <span className="text-xs font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
+                  <span className="result-university text-xs font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
                     {universityName}
                   </span>
                 </div>
-                <span className="text-[9px] sm:text-[10px] text-blue-500 font-semibold mt-0.5">
+                <span className="result-address-detail text-[9px] sm:text-[10px] text-blue-500 font-semibold mt-0.5">
                   {eventAddress}
                 </span>
               </div>
@@ -167,13 +213,13 @@ export const ResultPage = () => {
               />
 
               {/* Đã xóa mb-4 và đảm bảo căn giữa tuyệt đối theo chiều dọc */}
-              <div className="absolute inset-0 z-10 mb-4 flex items-center justify-between px-5 sm:px-9 left-[9%]">
+              <div className="result-time absolute inset-0 z-10 mb-1 flex items-center justify-center px-5 sm:px-9">
                 {/* Nhóm bên trái: Thời gian & Giờ */}
                 <div className="flex items-center gap-1 sm:gap-2 text-left">
-                  <span className="text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0 leading-none">
+                  <span className="result-time-label text-[9px] sm:text-[10px] text-blue-400 uppercase font-bold shrink-0 leading-none">
                     Thời gian:
                   </span>
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span className="result-time-value font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     8:00 - 17:00
                   </span>
                 </div>
@@ -183,7 +229,7 @@ export const ResultPage = () => {
 
                 {/* Nhóm bên phải: Ngày tháng (Thêm flex items-center để đồng bộ) */}
                 <div className="flex items-center text-right">
-                  <span className="font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span className="result-time-value font-inforfont text-xs sm:text-sm font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     28.11.2026
                   </span>
                 </div>
@@ -191,7 +237,7 @@ export const ResultPage = () => {
             </div>
           </div>
         </div>
-        <div className="absolute z-10 bottom-[15%] left-0 right-0 flex items-center justify-center pointer-events-none">
+        <div className="result-logo relative z-10 flex items-center justify-center pointer-events-none">
           <img
             src="/img/Logo_event.png"
             alt="Logo Event Bottom"
@@ -199,12 +245,15 @@ export const ResultPage = () => {
           />
         </div>
         <div
-          className="download-button absolute z-10 flex flex-col bottom-[5%] items-end w-full shrink-0"
-          onClick={handleDownload}
+          className="download-button relative z-10 flex flex-col items-end w-full shrink-0"
         >
           <button
             type="button"
-            className="bottom-0 w-full p-0 flex justify-center"
+            onClick={handleDownload}
+            disabled={isDownloading}
+            aria-busy={isDownloading}
+            aria-label={isDownloading ? "Đang tạo thiệp mời" : "Tải thiệp mời xuống"}
+            className="bottom-0 w-full p-0 flex justify-center disabled:cursor-wait"
           >
             <img
               src="/btn/download.png"
@@ -214,7 +263,7 @@ export const ResultPage = () => {
           </button>
         </div>
 
-        <div className="relative z-10 flex items-center justify-center gap-1.5 pb-1 text-[0.5rem] leading-none text-white/80">
+        <div className="result-powered relative z-10 flex items-center justify-center gap-1.5 pb-1 text-[0.5rem] leading-none text-white/80">
           <span>Powered by</span>
           <img
             src="/img/invitation-logo.png"
@@ -224,8 +273,11 @@ export const ResultPage = () => {
         </div>
       </div>
       {imgUrl && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
-          <div className="relative max-w-sm w-full flex flex-col items-center">
+        <div role="dialog"
+          aria-modal="true"
+          aria-label="Lưu thiệp mời"
+          className="save-image-dialog fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-start overflow-y-auto p-4">
+          <div className="relative max-w-sm w-full flex flex-col items-center my-auto shrink-0">
             <p className="text-white text-xs mb-2 text-center font-medium">
               👉 Nhấn giữ vào hình ảnh bên dưới và chọn <br />
               <strong className="text-yellow-300">
@@ -236,8 +288,21 @@ export const ResultPage = () => {
             <img
               src={imgUrl}
               alt="Thiệp mời của bạn"
-              className="w-full rounded-lg shadow-2xl border border-white/20 object-contain max-h-[70vh]"
+              className="save-image-preview w-full rounded-lg shadow-2xl border border-white/20 object-contain max-h-[60dvh]"
             />
+            {preparedFile && navigator.canShare?.({ files: [preparedFile] }) && (
+              <button
+                type="button"
+                onClick={handleSharePreparedImage}
+                className="mt-3 rounded-full bg-blue-600 px-5 py-2 text-sm font-bold text-white"
+              >
+                Lưu / chia sẻ ảnh
+              </button>
+            )}
+            <a href={imgUrl} download="thiep-moi.png" className="mt-3 text-sm text-white underline">
+              Tải tệp PNG
+            </a>
+            {shareError && <p role="status" className="mt-2 text-center text-xs text-white">{shareError}</p>}
             <button
               type="button"
               onClick={() => setImgUrl(null)}

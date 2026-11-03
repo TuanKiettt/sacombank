@@ -4,17 +4,17 @@ interface WelcomePageProps {
 
 export const WelcomePage = ({ onNext }: WelcomePageProps) => {
   return (
-    <div className="flex min-h-dvh w-full justify-center bg-black">
-      <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
+    <div className="portrait-stage flex min-h-dvh w-full justify-center bg-black">
+      <div className="portrait-canvas mobile-canvas relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
         <img
           src="/img/background.png"
           alt="background"
           className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
         />
 
-        <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
+        <div className="page-header relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
           {/* Logo hai bên (Hội & Sacombank) */}
-          <div className="flex flex-row items-center justify-between w-full px-5">
+          <div className="brand-logos flex flex-row items-center justify-between w-full px-5">
             <div>
               <img
                 src="/img/logo_hoi.png"
@@ -40,9 +40,9 @@ export const WelcomePage = ({ onNext }: WelcomePageProps) => {
             />
           </div>
         </div>
-        <div className="relative flex flex-col items-center justify-center h-full w-full">
+        <div className="relative flex flex-col items-center justify-center flex-1 min-h-0 w-full">
           {/* Hình nền nằm gọn trong khung content của MainLayout */}
-          <div className="flex flex-col text-center text-white/85 font-jakarta font-bold uppercase tracking-wider drop-shadow-lg z-5 absolute top-0">
+          <div className="welcome-title flex flex-col text-center text-white/85 font-jakarta font-bold uppercase tracking-wider drop-shadow-lg z-5 absolute top-0">
             <p className="text-2xl sm:text-3xl">Tự chủ tài chính</p>
             <p className="text-2xl sm:text-3xl">Kiến tạo tương lai</p>
           </div>

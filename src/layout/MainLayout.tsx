@@ -8,9 +8,9 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children, step }: MainLayoutProps) => {
   return (
-    <div className="flex min-h-dvh w-full justify-center bg-black">
+    <div className="portrait-stage flex min-h-dvh w-full justify-center bg-black">
       {/* Khung giả lập mobile tổng */}
-      <div className="relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
+      <div className="portrait-canvas mobile-canvas relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
         {/* Background chung */}
         <img
           src="/img/background1.png"
@@ -19,9 +19,9 @@ export const MainLayout = ({ children, step }: MainLayoutProps) => {
         />
 
         {/* Phần Header chứa Logo luôn cố định ở trên cùng */}
-        <div className="relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
+        <div className="page-header relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
           {/* Logo hai bên (Hội & Sacombank) */}
-          <div className="flex flex-row items-center justify-between w-full px-5">
+          <div className="brand-logos flex flex-row items-center justify-between w-full px-5">
             <div>
               <img
                 src="/img/logo_hoi.png"
@@ -49,7 +49,7 @@ export const MainLayout = ({ children, step }: MainLayoutProps) => {
         </div>
 
         {/* Phần Content có hiệu ứng chuyển động mượt mà khi đổi step */}
-        <main className="relative z-10 flex flex-col flex-1 w-full overflow-hidden">
+        <main className="relative z-10 flex flex-col flex-1 w-full page-content">
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -57,7 +57,7 @@ export const MainLayout = ({ children, step }: MainLayoutProps) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="flex flex-col flex-1 w-full h-full"
+              className="flex flex-col flex-1 w-full min-h-full"
             >
               {children}
             </motion.div>

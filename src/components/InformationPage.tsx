@@ -66,12 +66,12 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full px-4">
+    <div className="form-page flex flex-col items-center justify-center w-full px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative w-full h-dvh flex flex-col items-center justify-center my-auto mt-3 lg:p-4"
+        className="form-stack relative w-full flex flex-col items-center justify-center "
       >
-        <div className="relative w-full flex flex-col py-7 px-7">
+        <div className="info-frame relative w-full flex flex-col">
           <img
             src="/img/info_frame.png"
             alt="Register Frame"
@@ -80,10 +80,10 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
             className="absolute inset-0 z-0 w-full h-full object-fill"
           />
 
-          <div className="relative flex items-center justify-center uppercase bg-linear-to-l from-[#8e4a15] to-[#c9892e] bg-clip-text text-transparent font-bold text-[1.5rem]">
+          <div className="registration-title relative flex items-center justify-center uppercase bg-linear-to-l from-[#8e4a15] to-[#c9892e] bg-clip-text text-transparent font-bold text-[1.5rem]">
             Đăng ký tham gia
           </div>
-          <div className="relative flex flex-row items-center justify-center gap-2">
+          <div className="event-subtitle relative flex flex-row items-center justify-center gap-2">
             <img src="/img/leftside.png" alt="" className="w-auto h-2" />
             <p className="bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent font-bold text-sm font-inforfont">
               Ngày Hội Tài Chính Số 2026
@@ -91,7 +91,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
             <img src="/img/rightside.png" alt="" className="w-auto h-2" />
           </div>
 
-          <div className="relative z-10 flex flex-col gap-2.5 w-full overflow-y-auto max-h-[45dvh] px-3 py-2 mb-4 mt-3">
+          <div className="form-fields relative z-10 flex flex-col gap-2.5 w-full px-3 py-2 mb-4 mt-3">
             {singleFields.map((field) => (
               <div key={field.name} className="flex flex-col gap-0.5">
                 <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
@@ -163,7 +163,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
                 <select
                   {...register("gender")}
                   defaultValue=""
-                  className="w-3/4 rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none border border-blue-200"
+                  className="custom-dropdown w-full rounded-lg bg-white/90 px-3 py-1.5 text-xs sm:text-sm text-gray-900 outline-none border border-blue-200"
                 >
                   <option value="" disabled className="text-gray-300">
                     Nam/Nữ

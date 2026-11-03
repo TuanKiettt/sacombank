@@ -63,7 +63,7 @@ function App() {
           <motion.div
             key="step-0"
             {...appearAnimation}
-            className="absolute inset-0 flex justify-center bg-black w-full h-full"
+            className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
             <WelcomePage onNext={() => setStep(1)} />
           </motion.div>
@@ -74,7 +74,7 @@ function App() {
           <motion.div
             key="main-layout-steps"
             {...appearAnimation}
-            className="absolute inset-0 flex justify-center bg-black w-full h-full"
+            className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
             <MainLayout step={step}>
               {step === 1 && (
@@ -98,9 +98,9 @@ function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="absolute inset-0 flex justify-center bg-black w-full h-full"
+            className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
-            <div className="relative h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col items-center justify-center">
+            <div className="portrait-canvas relative h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col items-center justify-center">
               <img
                 src="/img/background.png"
                 alt="background"
@@ -121,9 +121,9 @@ function App() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-            className="absolute inset-0 flex justify-center bg-black w-full h-full"
+            className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
-            <div className="relative h-dvh w-full max-w-107.5 overflow-hidden flex flex-col items-center justify-center bg-black">
+            <div className="result-scroll relative h-dvh w-full max-w-107.5 flex flex-col items-center bg-black">
               <ResultPage />
             </div>
           </motion.div>

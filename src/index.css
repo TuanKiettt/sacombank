@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'inforfont';
-  src: url('/public/font/1FTV-VIP-Neusharp-Bold.ttf') format('truetype');
+  src: url('/font/1FTV-VIP-Neusharp-Bold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -31,3 +31,140 @@ div,
 img {
   -webkit-tap-highlight-color: transparent;
 }
+/* Match the image frames even when Android enables text autosizing. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; }
+.mobile-canvas { container-type: inline-size; min-width: 0; }
+.page-content { min-height: 0; overflow-y: auto; }
+
+/* One scroll area keeps fields and actions reachable on short screens. */
+.form-page {
+  height: auto;
+  min-height: 100%;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  padding-block: 12px max(12px, env(safe-area-inset-bottom));
+}
+.form-stack { height: auto; min-width: 0; margin: auto; flex-shrink: 0; }
+.form-fields, .confirm-details { max-height: none; overflow: visible; }
+.form-fields > div, .confirm-details > div { flex-shrink: 0; min-width: 0; }
+.form-fields input, .form-fields select { min-width: 0; max-width: 100%; }
+.registration-title { font-size: clamp(18px, 5.6cqw, 24px); white-space: nowrap; }
+.event-subtitle { gap: 4px; }
+.event-subtitle p { font-size: clamp(9px, 3cqw, 14px); white-space: nowrap; }
+.event-subtitle img { flex-shrink: 0; width: 6%; height: auto; }
+.confirm-title { font-size: clamp(15px, 4.5cqw, 20px); overflow-wrap: anywhere; }
+.confirm-frame > div:first-of-type > div { align-items: flex-start; }
+.confirm-frame > div:first-of-type img, .confirm-details img { flex-shrink: 0; }
+.confirm-details { overflow-wrap: anywhere; }
+.confirm-details > div > div,
+.confirm-details .grid > div,
+.confirm-details .grid > div > div { min-width: 0; }
+.welcome-title p { font-size: clamp(20px, 6cqw, 28px); white-space: nowrap; }
+
+/* Ticket sections share the background image coordinate system. */
+.result-scroll { overflow-y: auto; justify-content: flex-start; }
+.result-page {
+  min-height: 740px;
+  height: var(--ticket-height, max(100dvh, 740px));
+  overflow: visible;
+  flex-shrink: 0;
+  padding: 0;
+}
+.result-body { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.result-body > * { flex-shrink: 0; }
+.result-header { position: absolute; top: 12px; left: 6%; width: 88%; padding-top: 0; }
+.result-invitation { width: 80%; margin-top: 12px; }
+.result-invitation img { width: 100%; height: auto; }
+.result-content { position: absolute; top: 27%; left: 8%; width: 84%; padding: 0; margin: 0; gap: 4px; }
+.result-content > div:first-child { min-width: 0; width: 100%; }
+.result-name { overflow-wrap: anywhere; font-size: clamp(16px, 4.7cqw, 20px); }
+.result-logo { position: absolute; bottom: 17%; left: 0; width: 100%; margin: 0; padding: 0; }
+.result-logo img { width: 44%; max-height: 100px; }
+.result-page .download-button { position: absolute; bottom: 6%; left: 12%; width: 76%; }
+.result-powered { position: absolute; bottom: max(8px, env(safe-area-inset-bottom)); width: 100%; }
+.result-frames { container-type: inline-size; }
+.result-success { font-size: 4.5cqw; margin-top: 9cqw; white-space: nowrap; }
+.result-program { font-size: 3.1cqw; white-space: nowrap; }
+.result-address { left: 18%; padding: 0 4% 2%; }
+.result-address-label { font-size: 2.6cqw; }
+.result-university { font-size: 3.5cqw; white-space: nowrap; }
+.result-address-detail { font-size: 2.7cqw; }
+.result-time { left: 18%; padding: 0 4% 4%; margin-bottom: 0; gap: 2cqw; white-space: nowrap; }
+.result-time > div { min-width: 0; flex-shrink: 0; }
+.result-time > div:nth-child(2) { height: 5cqw; margin-inline: 0; }
+.result-time-label { font-size: 2.7cqw; }
+.result-time-value { font-size: 3.5cqw; }
+
+/* Brand assets scale with available width rather than the system font size. */
+.brand-logos { padding-inline: 20px; gap: 12px; }
+.brand-logos > div { min-width: 0; flex-shrink: 0; }
+.brand-logos > div:first-child { width: 24%; }
+.brand-logos > div:last-child { width: 38%; padding: 4px; }
+.brand-logos img { width: 100%; height: auto; }
+.page-header > div:last-child img { max-width: 80cqw; height: min(24cqw, 96px); }
+@media (max-height: 500px) {
+  .page-header { padding-top: 8px; }
+  .page-header > div:last-child img { height: 56px; }
+}
+
+/* Preserve frame corners instead of stretching them with long/error content. */
+.info-frame, .confirm-frame {
+  border: 24px solid transparent;
+  border-image: url('/img/info_frame.png') 700 fill / 24px / 0 stretch;
+  padding: 8px;
+}
+.info-frame > img:first-child, .confirm-frame > img:first-child { display: none; }
+
+.confirm-details .grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+}
+.confirm-details .grid > div:last-child > div > div { min-width: 0; }
+.confirm-details .grid button { flex-shrink: 0; }
+.confirm-details .grid > div:last-child .mt-1 { flex-wrap: wrap; }
+
+/* Allow the native iOS image save menu in the export preview. */
+.save-image-preview { -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; }
+
+/* Desktop fills the available height while preserving the full 9:16 artwork. */
+@media (min-width: 768px) {
+  .app-screen { align-items: center; }
+  .portrait-stage { height: 100dvh; min-height: 0; align-items: center; }
+  .portrait-canvas {
+    width: min(100%, calc(100dvh * 9 / 16));
+    height: min(100dvh, calc(100dvw * 16 / 9));
+    max-width: none;
+    flex-shrink: 0;
+  }
+  .portrait-canvas > img:first-child { object-fit: contain; }
+}
+
+/* Keep MSSV and gender side by side, as in the registration design. */
+.form-fields > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2px; }
+.form-fields > .grid > div { display: contents; }
+.form-fields > .grid > div:first-child > * { grid-column: 1; }
+.form-fields > .grid > div:last-child > * { grid-column: 2; }
+.form-fields > .grid label { grid-row: 1; }
+.form-fields > .grid input, .form-fields > .grid select { grid-row: 2; }
+.form-fields > .grid > div > span { grid-row: 3; }
+.form-fields > .grid label { overflow-wrap: anywhere; }
+.form-fields > .grid label img { flex-shrink: 0; }
+.form-fields > .grid label span { min-width: 0; }
+.form-fields > .grid input, .form-fields > .grid select { width: 100%; padding-inline: 8px; }
+.form-fields > .grid > div > span { overflow-wrap: anywhere; }
+
+/* Use the supplied dropdown artwork while retaining native picker behavior. */
+.custom-dropdown {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url('/icon/option.png');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px auto;
+  padding-right: 30px;
+}
+.custom-dropdown::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+.form-fields > .grid select.custom-dropdown { padding-right: 30px; }

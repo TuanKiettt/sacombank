@@ -71,11 +71,11 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full px-4">
+    <div className="form-page flex flex-col items-center justify-center w-full px-4">
       {/* Khung bọc tổng thể đồng bộ với InformationPage */}
-      <div className="relative w-full h-dvh flex flex-col items-center justify-center">
+      <div className="form-stack relative w-full flex flex-col items-center justify-center">
         {/* Khung chứa background và nội dung thông tin */}
-        <div className="relative w-full flex flex-col p-10">
+        <div className="confirm-frame relative w-full flex flex-col">
           {/* Hình nền info_frame.png */}
           <img
             src="/img/info_frame.png"
@@ -87,7 +87,7 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
             <div className="flex items-center justify-center mb-1 gap-2">
               <img src="/icon/check.png" alt="" className="w-7 h-7" />
               <div className="flex flex-col items-start">
-                <h2 className="uppercase bg-linear-to-l from-[#8e4a15] to-[#c9892e] bg-clip-text text-transparent font-bold text-xl">
+                <h2 className="confirm-title uppercase bg-linear-to-l from-[#8e4a15] to-[#c9892e] bg-clip-text text-transparent font-bold text-xl">
                   Xác nhận thông tin
                 </h2>
                 <p className="text-[0.55rem] sm:text-xs font-semibold text-blue-900/80">
@@ -97,7 +97,7 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
             </div>
           </div>
 
-          <div className="relative z-10 flex flex-col gap-2.5 w-full overflow-y-auto max-h-[45dvh] p-3 mb-4 mt-2 bg-white/80 rounded-2xl">
+          <div className="confirm-details relative z-10 flex flex-col gap-2.5 w-full overflow-y-auto max-h-[45dvh] p-3 mb-4 mt-2 bg-white/80 rounded-2xl">
             {/* Render các trường đơn */}
             {singleFields.map((field) => (
               <div
