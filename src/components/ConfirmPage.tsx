@@ -106,10 +106,10 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
               >
                 <img src={field.icon} alt={field.label} className="w-6 h-6" />
                 <div>
-                  <label className="text-[#4a96d8] flex items-center gap-1.5 text-[0.5rem] font-semibold font-inforfont">
+                  <label className="text-[#4a96d8] flex items-center gap-1.5 text-[0.5rem] font-medium">
                     {field.label}
                   </label>
-                  <div className="w-full text-xs sm:text-sm text-blue-900 font-medium shadow-inner ">
+                  <div className="w-full text-xs sm:text-sm text-blue-900 font-bold shadow-inner ">
                     {field.value}
                   </div>
                 </div>
@@ -122,10 +122,10 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
               <div className="flex flex-row gap-2.5 items-center">
                 <img src="/icon/MSSV.png" alt="Mssv:" className="w-6 h-6" />
                 <div className="flex flex-col">
-                  <label className="text-[#4a96d8] flex items-center gap-2 text-[0.6rem] font-semibold font-inforfont">
+                  <label className="text-[#4a96d8] flex items-center gap-2 text-[0.6rem] font-medium">
                     <span>Mssv:</span>
                   </label>
-                  <div className="w-full text-xs sm:text-sm text-blue-900 font-medium">
+                  <div className="w-full text-xs sm:text-sm text-blue-900 font-bold">
                     {data.studentId}
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export const ConfirmPage = ({ onConfirm, onBack }: ConfirmPageProps) => {
                     className="w-6 h-6"
                   />
                   <div className="flex flex-col">
-                    <label className="text-[#4a96d8] flex items-center gap-2 text-[0.6rem] font-semibold font-inforfont">
+                    <label className="text-[#4a96d8] flex items-center gap-2 text-[0.6rem] font-medium">
                       <span>Giới tính:</span>
                     </label>
                     <div className="flex items-center gap-3 mt-1">

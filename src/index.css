@@ -1,14 +1,64 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'inforfont';
-  src: url('/font/1FTV-VIP-Neusharp-Bold.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-Regular.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/font/BeVietnamPro-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neusharp';
+  src: url('/font/1FTV-VIP-Neusharp-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme {
-  --font-inforfont: 'inforfont', sans-serif;
+  --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+  --font-inforfont: 'Neusharp', 'Be Vietnam Pro', sans-serif;
 }
 
 img,
@@ -176,3 +226,7 @@ body { margin: 0; }
 .confirm-details > .grid > div:first-child,
 .confirm-details > .grid > div:last-child > div { align-items: flex-start; gap: 6px; }
 .confirm-details > .grid > div:last-child .mt-1 { gap: 6px; }
+
+/* Typography from the reference: geometric slogans, readable Vietnamese body. */
+.confirm-details button { font-weight: 700; }
+.result-success { font-weight: 700; }

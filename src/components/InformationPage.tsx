@@ -94,7 +94,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
           <div className="form-fields relative z-10 flex flex-col gap-2.5 w-full px-3 py-2 mb-4 mt-3">
             {singleFields.map((field) => (
               <div key={field.name} className="flex flex-col gap-0.5">
-                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
+                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold">
                   <img src={field.icon} alt={field.label} className="w-4 h-4" />
                   {field.label}
                 </label>
@@ -113,7 +113,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
             ))}
 
             <div className="flex flex-col gap-0.5">
-              <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
+              <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold">
                 <img src="/icon/university.png" alt="Trường:" className="w-4 h-4" />
                 <span>Trường:</span>
               </label>
@@ -133,7 +133,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
 
             <div className="grid grid-cols-2 gap-2">
               <div className="flex flex-col gap-0.5">
-                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
+                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold">
                   <img src="/icon/MSSV.png" alt="Mssv:" className="w-4 h-4" />
                   <span>Mssv:</span>
                 </label>
@@ -151,7 +151,7 @@ export const InformationPage = ({ onSubmitSuccess }: InformationPageProps) => {
               </div>
 
               <div className="flex flex-col gap-0.5">
-                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold font-inforfont">
+                <label className="text-blue-900 flex items-center gap-1.5 text-xs font-semibold">
                   <img
                     src="/icon/gender.png"
                     alt="Giới tính:"

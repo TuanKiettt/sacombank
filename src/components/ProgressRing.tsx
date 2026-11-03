@@ -163,7 +163,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
 
           <div
             ref={labelRef}
-            className="font-orbitron absolute z-20 inset-0 grid place-items-center font-bold tracking-[2px] text-white select-none [text-shadow:0_0_8px_#7df3ff,0_0_22px_#7df3ff]"
+            className="font-inforfont absolute z-20 inset-0 grid place-items-center font-bold tracking-[2px] text-white select-none [text-shadow:0_0_8px_#7df3ff,0_0_22px_#7df3ff]"
             style={{ fontSize: size * 0.16 }}
           >
             0%
@@ -174,7 +174,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
           <p className="text-white font-bold font-inforfont text-lg sm:text-xl tracking-wide drop-shadow-md">
             Đang tải dữ liệu...
           </p>
-          <p className="text-blue-200/90 text-xs sm:text-sm font-inforfont mt-0.5 italic">
+          <p className="text-blue-200/90 text-xs sm:text-sm mt-0.5 italic">
             Bạn vui lòng chờ trong giây lát
           </p>
         </div>

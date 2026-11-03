@@ -42,7 +42,7 @@ export const WelcomePage = ({ onNext }: WelcomePageProps) => {
         </div>
         <div className="relative flex flex-col items-center justify-center flex-1 min-h-0 w-full">
           {/* Hình nền nằm gọn trong khung content của MainLayout */}
-          <div className="welcome-title flex flex-col text-center text-white/85 font-jakarta font-bold uppercase tracking-wider drop-shadow-lg z-5 absolute top-0">
+          <div className="welcome-title flex flex-col text-center text-white/85 font-inforfont font-bold uppercase tracking-wider drop-shadow-lg z-5 absolute top-0">
             <p className="text-2xl sm:text-3xl">Tự chủ tài chính</p>
             <p className="text-2xl sm:text-3xl">Kiến tạo tương lai</p>
           </div>

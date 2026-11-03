@@ -156,10 +156,10 @@ export const ResultPage = () => {
 
         <div className="result-content relative z-10 flex flex-col items-center w-full gap-1 mx-auto">
           <div className="flex flex-col items-center text-center">
-            <p className="text-amber-200/90 italic text-xs sm:text-sm uppercase tracking-wider font-semibold drop-shadow">
+            <p className="text-amber-200/90 italic text-xs sm:text-sm tracking-normal font-semibold drop-shadow">
               Chào mừng bạn
             </p>
-            <h2 className="result-name text-yellow-300 font-bold text-lg sm:text-xl uppercase tracking-wide drop-shadow-md mt-0.5">
+            <h2 className="result-name text-yellow-300 font-bold text-lg sm:text-xl tracking-normal drop-shadow-md mt-0.5">
               {formData?.fullName || "Nguyễn Văn A"}
             </h2>
           </div>
@@ -172,7 +172,7 @@ export const ResultPage = () => {
                 className="relative w-full h-auto object-contain pointer-events-none drop-shadow-sm"
               />
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
-                <p className="result-success font-extrabold text-sm font-inforfont mt-7 text-blue-700">
+                <p className="result-success font-bold text-sm mt-7 text-blue-700">
                   Đã đăng ký thành công
                 </p>
                 <p className="result-program text-slate-700 text-[10px] font-semibold">
@@ -192,7 +192,7 @@ export const ResultPage = () => {
               />
               <div className="result-address absolute inset-0 z-10 flex flex-col justify-center text-left px-8 sm:px-10 overflow-hidden left-[9%] ">
                 <div className="flex items-baseline gap-1.5 flex-nowrap w-full overflow-hidden">
-                  <span className="result-address-label text-[0.5rem] text-blue-400 uppercase font-bold shrink-0">
+                  <span className="result-address-label text-[0.5rem] text-blue-400 font-semibold shrink-0">
                     Địa chỉ:
                   </span>
                   <span className="result-university text-xs font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent">
@@ -214,14 +214,14 @@ export const ResultPage = () => {
 
               <div className="result-time absolute inset-0 z-10 flex items-center">
                 <div className="result-time-row">
-                  <span className="result-time-label text-blue-400 uppercase font-bold leading-none">
+                  <span className="result-time-label text-blue-400 font-bold leading-none">
                     Thời gian:
                   </span>
-                  <span className="result-time-value font-inforfont font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span className="result-time-value font-bold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     8:00 - 17:00
                   </span>
                   <span aria-hidden="true" className="result-time-divider bg-slate-300" />
-                  <span className="result-time-value font-inforfont font-extrabold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
+                  <span className="result-time-value font-bold bg-linear-to-b from-[#1f3a98] to-[#4a96d8] bg-clip-text text-transparent leading-none">
                     28.11.2026
                   </span>
                 </div>
