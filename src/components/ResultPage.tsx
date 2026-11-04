@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { readInformationData, type InformationData } from "../lib/information";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { readInformationData, type InformationData } from "../lib/information";
 
 type ResultPageProps = {
   resultData?: any;
@@ -66,9 +66,13 @@ function resolveVideoUrl(input: unknown): string | null {
 
 export const ResultPage = ({ resultData }: ResultPageProps) => {
   const [formData, setFormData] = useState<InformationData | null>(null);
-  // const [audioPromptOpen, setAudioPromptOpen] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
+  const [videoAspect, setVideoAspect] = useState(9 / 16);
+  const [showDownloadHelp, setShowDownloadHelp] = useState(true);
+  const isInAppBrowser = /Zalo|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -93,18 +97,6 @@ export const ResultPage = ({ resultData }: ResultPageProps) => {
     }
   }, [videoUrl, isMuted, hasPlayedOnce]);
 
-  const handleDownload = () => {
-    if (!videoUrl) return;
-
-    const link = document.createElement("a");
-    link.href = videoUrl;
-    link.download = "result-video";
-    link.rel = "noopener noreferrer";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  };
-
   const handleVideoEnded = () => {
     setHasPlayedOnce(true);
 
@@ -117,12 +109,10 @@ export const ResultPage = ({ resultData }: ResultPageProps) => {
 
   return (
     <div className="result-page relative isolate h-dvh w-full overflow-hidden bg-black">
-      <div className="absolute inset-0 flex items-center justify-center bg-black">
+      <div className="result-video-viewport absolute inset-0 flex items-center justify-center">
         <div
-          className="relative h-dvh w-[100vw] overflow-hidden"
-          style={{
-            maxWidth: "min(100vw, calc(100dvh * 9 / 16))",
-          }}
+          className="result-video-shell relative overflow-hidden bg-black"
+          style={{ "--video-aspect": videoAspect } as CSSProperties}
         >
           {videoUrl ? (
             <video
@@ -134,44 +124,78 @@ export const ResultPage = ({ resultData }: ResultPageProps) => {
               loop={hasPlayedOnce}
               className="h-full w-full object-contain"
               onEnded={handleVideoEnded}
+              onLoadedMetadata={(event) => {
+                const video = event.currentTarget;
+                if (video.videoWidth && video.videoHeight) {
+                  setVideoAspect(video.videoWidth / video.videoHeight);
+                }
+              }}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-black text-white">
-              ...
+              <div className="text-center">
+                <p className="text-xs uppercase tracking-[0.28em] text-white/60">
+                  Kết quả
+                </p>
+                <h2 className="mt-2 text-2xl font-bold text-yellow-300">
+                  {formData?.fullName || "Đăng ký thành công"}
+                </h2>
+              </div>
             </div>
+          )}
+          {videoUrl && (
+            <a
+              href={videoUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="result-video-download absolute z-30 border-0 bg-transparent p-0 cursor-pointer"
+            >
+              <img
+                src="/btn/download.png"
+                alt="Tải thiệp mời xuống"
+                className="block w-full h-auto drop-shadow-md"
+              />
+            </a>
           )}
         </div>
       </div>
 
       {videoUrl && (
-        <button
-          type="button"
-          onClick={() => setIsMuted((prev) => !prev)}
-          aria-label={isMuted ? "Bật âm" : "Tắt âm"}
-          className="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white shadow-lg shadow-black/30 backdrop-blur-sm transition-colors hover:bg-black/55"
-        >
-          {isMuted ? (
-            <VolumeX className="h-5 w-5" />
-          ) : (
-            <Volume2 className="h-5 w-5" />
+        <>
+          {showDownloadHelp && (isInAppBrowser || isIOS) && (
+            <aside
+              aria-label="Hướng dẫn lưu video"
+              className="absolute left-4 right-20 top-[max(1rem,env(safe-area-inset-top))] z-40 max-w-sm rounded-xl bg-black/85 p-3 pr-8 text-xs leading-relaxed text-white shadow-lg"
+            >
+              <button
+                type="button"
+                onClick={() => setShowDownloadHelp(false)}
+                aria-label="Đóng hướng dẫn"
+                className="absolute right-0 top-0 flex h-8 w-8 items-center justify-center text-lg"
+              >×</button>
+              {isInAppBrowser && (
+                <p>Nếu Zalo/Facebook không cho tải, hãy mở liên kết video bằng Safari hoặc Chrome qua menu của ứng dụng, hoặc sao chép liên kết video sang trình duyệt.</p>
+              )}
+              {isIOS && (
+                <p>Trên iPhone/iPad, nếu video mở ra, nhấn Chia sẻ rồi chọn Lưu video hoặc Lưu vào Tệp nếu có. File tải xuống có thể nằm trong Tệp → Tải về.</p>
+              )}
+            </aside>
           )}
-        </button>
-      )}
-
-      {videoUrl && (
-        <div className="download-button relative z-10 flex flex-col items-end w-full shrink-0">
           <button
             type="button"
-            onClick={handleDownload}
-            className="bottom-0 w-full p-0 flex justify-center disabled:cursor-wait"
+            onClick={() => setIsMuted((prev) => !prev)}
+            aria-label={isMuted ? "Bật âm" : "Tắt âm"}
+            className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-30 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white shadow-lg shadow-black/30 backdrop-blur-sm transition-colors hover:bg-black/55"
           >
-            <img
-              src="/btn/download.png"
-              alt="Tải thiệp mời xuống"
-              className="w-full h-auto object-contain max-h-20 drop-shadow-md"
-            />
+            {isMuted ? (
+              <VolumeX className="h-5 w-5" />
+            ) : (
+              <Volume2 className="h-5 w-5" />
+            )}
           </button>
-        </div>
+
+        </>
       )}
     </div>
   );

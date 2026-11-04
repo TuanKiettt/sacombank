@@ -24,7 +24,6 @@ export function readGuestSession(): any | null {
 
 export function saveGuestSession(session: any): any {
   const nextSession = session ?? {};
-  localStorage.setItem(GUEST_SESSION_STORAGE_KEY, JSON.stringify(nextSession));
   localStorage.setItem("sacombank.guest.session", JSON.stringify(nextSession));
   return nextSession;
 }

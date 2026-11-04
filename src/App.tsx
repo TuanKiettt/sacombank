@@ -154,7 +154,7 @@ function App() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="app-screen absolute inset-0 flex justify-center bg-black w-full h-full"
           >
-            <div className="result-scroll relative h-dvh w-full max-w-240 flex flex-col items-center bg-black">
+            <div className="result-scroll relative h-dvh w-full flex flex-col items-center bg-black">
               <ResultPage resultData={resultData} />
             </div>
           </motion.div>

@@ -27,6 +27,20 @@ export async function postJson<T>(
   }
 
   if (!response.ok) {
+    // Inspect the full payload: validation details may be nested under error/errors.
+    const details = JSON.stringify(data ?? "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .toLowerCase();
+    const isDuplicatePhone =
+      /phone|mobile|so dien thoai|sdt/.test(details) &&
+      /duplicat|already|exists|in use|used|taken|unique|23505|trung|da.*(?:dung|su dung|ton tai|dang ky)/.test(details);
+
+    if (path === "/invitation/create_service" && isDuplicatePhone) {
+      throw new Error("Số điện thoại này đã được dùng để tạo thiệp");
+    }
+
     const message = data?.error || data?.message || `Request failed: ${response.status}`;
     throw new Error(`${message} (status ${response.status})`);
   }
