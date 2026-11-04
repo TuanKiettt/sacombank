@@ -11,11 +11,17 @@ const fakeFetch = (current: number) =>
     ),
   );
 
-  interface ProgressRingProps {
-    size?: number;
-    onComplete?: () => void
-  }
-export default function ProgressRing({ size = 200, onComplete }: ProgressRingProps) {
+interface ProgressRingProps {
+  size?: number;
+  onComplete?: () => void;
+  autoAdvance?: boolean;
+}
+
+export default function ProgressRing({
+  size = 200,
+  onComplete,
+  autoAdvance = true,
+}: ProgressRingProps) {
   const arcRef = useRef<SVGCircleElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
   const runningRef = useRef(false);
@@ -63,12 +69,16 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
           state.target = next;
         }
 
-        if (!cancelled) {
+        if (!cancelled && autoAdvance) {
           runningRef.current = false;
 
           setTimeout(() => {
             if (onComplete) onComplete();
           }, 500);
+        }
+
+        if (!cancelled && !autoAdvance) {
+          runningRef.current = false;
         }
       })();
 
@@ -82,22 +92,18 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
 
   const handleClick = () => {
     if (runningRef.current) return;
-
     setRunId((n) => n + 1);
   };
 
   return (
     <div className="portrait-canvas mobile-canvas relative isolate h-dvh w-full max-w-107.5 overflow-hidden bg-black flex flex-col">
-      {/* Background chung */}
       <img
         src="/img/background1.png"
         alt="background"
         className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
       />
 
-      {/* Phần Header chứa Logo luôn ở trên cùng */}
       <div className="page-header relative z-10 flex flex-col justify-center items-center shrink-0 w-full pt-4">
-        {/* Logo hai bên (Hội & Sacombank) */}
         <div className="brand-logos flex flex-row items-center justify-between w-full px-5">
           <div className="">
             <img
@@ -115,7 +121,6 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
           </div>
         </div>
 
-        {/* Logo Event */}
         <div className="relative mt-2 w-[80%] max-w-lvh">
           <img
             src="/img/Logo_event.png"
@@ -172,7 +177,7 @@ export default function ProgressRing({ size = 200, onComplete }: ProgressRingPro
 
         <div className="relative flex flex-col items-center text-center">
           <p className="text-white font-bold font-inforfont text-lg sm:text-xl tracking-wide drop-shadow-md">
-            Đang tải dữ liệu...
+            Đang xử lý dữ liệu...
           </p>
           <p className="text-blue-200/90 text-xs sm:text-sm mt-0.5 italic">
             Bạn vui lòng chờ trong giây lát
